@@ -3,6 +3,7 @@ var router = express.Router();
 var jwt    = require('jsonwebtoken');
 var config = require('../config/config');
 var User = require("../models/user");
+var bcrypt = require('bcrypt');
 
 // route to authenticate a user (POST http://localhost:8080/api/login)
 router.post('/login', function(req, res) {
@@ -18,7 +19,7 @@ router.post('/login', function(req, res) {
             res.json({ success: false, message: 'Authentication failed.' });
         } else if (user) {
             // check if password matches
-            if (user.password != req.body.password) {
+            if (!bcrypt.compareSync(req.body.password, user.password)) {
                 res.json({ success: false, message: 'Authentication failed.' });
             } else {
 

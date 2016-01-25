@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
 var mwAuth = require("../middlewares/auth");
+var bcrypt = require('bcrypt');
 
 // route to return all users (GET http://localhost:8080/api/users)
 router.get('/', mwAuth.authenticate, mwAuth.authorize, function(req, res) {
@@ -12,19 +13,21 @@ router.get('/', mwAuth.authenticate, mwAuth.authorize, function(req, res) {
 
 /* setup */
 router.get('/setup', function(req, res) {
-
-    // create a sample user
     var admin = new User({
-        name: 'admin',
-        password: 'admin',
-        admin: true
-    });
+            name: 'admin',
+            admin: true
+        });
+    User.remove({}, function(err){ if (err) throw err; });
 
-    // save the sample user
-    admin.save(function(err) {
+    bcrypt.hash('admin', 10, function(err, hashedPass) {
         if (err) throw err;
-        console.log('User saved successfully');
-        res.json({ success: true });
+
+        admin.password = hashedPass;
+        admin.save(function(err) {
+            if (err) throw err;
+            console.log('User saved successfully');
+            res.json({ success: true });
+        });
     });
 });
 

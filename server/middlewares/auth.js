@@ -1,5 +1,6 @@
 var jwt    = require('jsonwebtoken');
 var config = require('../config/config');
+var bcrypt = require('bcrypt');
 
 // route middleware to verify a token
 module.exports = {
