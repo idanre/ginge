@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+    <link rel="import" href="elements/elements.html">
+  </head>
+  <body>
+    <template is="dom-bind">
+      <month-display></month-display>
+      <byutv-jsonp
+         auto
+         url="http://localhost:8088/posts"
+         params='{}'
+         last-response="{{lastResponse}}"
+         last-error="{{lastError}}"
+         debounce-duration="300"></byutv-jsonp>
+        <iron-list items="[[lastResponse]]" as="item">
+          <template>
+            <span>{{item.title}}</span>
+          </template>
+        </div>
+      </iron-list>
+    </template>
+  </body>
+</html>

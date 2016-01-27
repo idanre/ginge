@@ -17,7 +17,7 @@ router.route("/")
     .get(function(req, res){
         Post.find(function(err, posts){
             if (err) res.send(err)
-            res.json(posts);
+            res.jsonp(posts);
         });
     });
 router.route("/:post_id")
