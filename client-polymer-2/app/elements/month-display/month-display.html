@@ -17,7 +17,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
       }
     </style>
-    <div><span>{{month}}</span>/<span>{{year}}</span></div>
+    <div><span>{{displayMonth}}</span>/<span>{{year}}</span></div>
+    <div id="calendar">
+      <template id="dayslist" is="dom-repeat" items="{{days}}" as="week">
+        <template id="dayslist" is="dom-repeat" items="{{week}}" as="day">
+          <span>{{day}}</span>
+        </template>
+        <br>
+      </template>
+    </div>
   </template>
   <script>
   (function() {
@@ -38,18 +46,57 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         month: {
           type: Number
         },
+        displayMonth: {
+          type: String,
+          computed: '_setDisplayMonth(date)'
+        },
         year: {
           type: Number
         },
         days: {
-          type: Array
+          type: Array,
+          value: function() {
+            return [];
+          },
+          notify: true
         }
       },
       _updateData: function(date){
-
-        this.month = date.getMonth() + 1;
+        var tempDate, dayArr = [], week = [], weekDay, day;
+        this.month = date.getMonth();
         this.year = date.getFullYear();
-        console.log(new Date(this.year, this.month, 1, 0, 0, 0, 0));
+        tempDate = new Date(this.year, this.month, 1);
+        weekDay = tempDate.getDay();
+        day = tempDate.getDate();
+        // spaces before
+        while(weekDay > week.length){
+          week.push("*");
+          weekDay = tempDate.getDay();
+        }
+        // generate days
+        while (tempDate.getMonth() === this.month) {
+          day = tempDate.getDate();
+          weekDay = tempDate.getDay();
+          week.push(day);
+          // end of week
+          if(week.length === 7) {
+            dayArr.push(week);
+            week = [];
+          }
+          tempDate.setDate(++day);
+        }
+        // days after
+        while(week.length < 7){
+          week.push("*");
+          weekDay = tempDate.getDay();
+        }
+        dayArr.push(week);
+
+        this.set('days', dayArr);
+      },
+      _setDisplayMonth: function(date){
+        var monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        return monthList[date.getMonth()];
       }
     });
   })();
