@@ -1,0 +1,80 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="day-card">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      :root {
+        --paper-card: {
+          width: 100%;
+        }
+      }
+      .gray {
+        --paper-fab-background: #9E9E9E;
+      }
+      .red {
+        --paper-fab-background: #F44336;
+      }
+      .orange {
+        --paper-fab-background: #FF9800;
+      }
+      .yellow {
+        --paper-fab-background: #FFEB3B;
+      }
+      .lightGreen {
+        --paper-fab-background: #8BC34A;
+      }
+      .green {
+        --paper-fab-background: #4CAF50;
+      }
+      .fab-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+      }
+    </style>
+      <paper-card>
+        <div class="card-content">
+          <div>{{day}}</div>
+          <div class="fab-container">
+            <paper-fab class$="{{fabClass}}"></paper-fab>
+          </div>
+        </div>
+      </paper-card>
+  </template>
+  <script>
+  (function() {
+    'use strict';
+
+    Polymer({
+      is: 'day-card',
+
+      properties: {
+        day: {
+          type: String,
+          value: "*",
+          notify: true
+        },
+        fabClass: {
+          type: String,
+          value: function(){
+            var classes = ["gray", "red", "orange", "yellow", "lightGreen", "green"];
+            return classes[Math.floor(Math.random()*classes.length)];
+          },
+        }
+      }
+    });
+  })();
+  </script>
+</dom-module>

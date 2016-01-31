@@ -16,16 +16,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
       }
+      .week {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      .day {
+        @apply(--layout-flex);
+        @apply(--layout-self-stretch);
+        margin: 5px;
+      }
     </style>
     <div><span>{{displayMonth}}</span>/<span>{{year}}</span></div>
-    <div id="calendar">
-      <template id="dayslist" is="dom-repeat" items="{{days}}" as="week">
-        <template id="dayslist" is="dom-repeat" items="{{week}}" as="day">
-          <span>{{day}}</span>
-        </template>
-        <br>
+    <template id="dayslist" is="dom-repeat" items="{{days}}" as="week">
+      <div class="week">
+      <template id="dayslist" is="dom-repeat" items="{{week}}" as="day">
+          <div class="day"><day-card day="{{day}}"></day-card></div>
       </template>
-    </div>
+      </div>
+    </template>
   </template>
   <script>
   (function() {
@@ -86,11 +94,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           tempDate.setDate(++day);
         }
         // days after
-        while(week.length < 7){
-          week.push("*");
-          weekDay = tempDate.getDay();
+        if(week.length > 0) {
+          while(week.length < 7) {
+            week.push("*");
+            weekDay = tempDate.getDay();
+          }
+          dayArr.push(week);
         }
-        dayArr.push(week);
 
         this.set('days', dayArr);
       },
