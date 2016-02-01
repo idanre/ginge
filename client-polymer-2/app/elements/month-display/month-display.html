@@ -23,14 +23,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .day {
         @apply(--layout-flex);
         @apply(--layout-self-stretch);
-        margin: 5px;
+        margin: 4px;
       }
     </style>
     <div><span>{{displayMonth}}</span>/<span>{{year}}</span></div>
     <template id="dayslist" is="dom-repeat" items="{{days}}" as="week">
       <div class="week">
       <template id="dayslist" is="dom-repeat" items="{{week}}" as="day">
-          <div class="day"><day-card day="{{day}}"></day-card></div>
+        <div class="day"><day-card day="{{day}}"></day-card></div>
       </template>
       </div>
     </template>

@@ -4,42 +4,49 @@
     <script src="bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="elements/elements.html">
       <style is="custom-style">
-    paper-scroll-header-panel {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: #eee;
-    }
-    paper-toolbar {
-      --paper-toolbar-background: #00BCD4;
-    }
-    paper-toolbar .title {
-      margin: 0 8px;
-    }
-    paper-scroll-header-panel .content {
-      padding: 8px;
-    }
-    paper-icon-button {
-      --paper-icon-button-ink-color: white;
-    }
-    .spacer {
-      @apply(--layout-flex);
-    }
-  </style>
+        paper-scroll-header-panel {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background-color: #eee;
+        }
+        paper-toolbar {
+          --paper-toolbar-background: #00BCD4;
+        }
+        paper-toolbar .title {
+          margin: 0 8px;
+        }
+        paper-scroll-header-panel .content {
+          padding: 8px;
+        }
+        paper-icon-button {
+          --paper-icon-button-ink-color: white;
+        }
+        .spacer {
+          @apply(--layout-flex);
+        }
+        .content {
+          @apply(--layout-horizontal);
+          @apply(--layout-center-justified);
+        }
+        .main {
+          max-width: 960px;
+        }
+    </style>
   </head>
 <body unresolved>
   <paper-scroll-header-panel fixed>
-
     <paper-toolbar>
       <div class="title">Ginge</div>
     </paper-toolbar>
-    <template is="dom-bind" id="month">
     <div class="content">
-    <month-display date="{{date}}"></month-display>
-    </template>
-
+      <div class="main">
+        <template is="dom-bind" id="month">
+          <month-display date="{{date}}"></month-display>
+        </template>
+      </div>
     </div>
 
   </paper-scroll-header-panel>
