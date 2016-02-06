@@ -1,5 +1,6 @@
 var Post = require("../models/post");
 
+// get days with average posts rank
 module.exports.getDays = function(start, end) {
     var promise = Post.aggregate([
          {
