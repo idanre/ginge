@@ -1,7 +1,9 @@
 var mongoose = require('mongoose');
 
 var PostSchema = mongoose.Schema({
-    title: String
+    day: Date,
+    title: String,
+    rank: Number
 });
 
 module.exports = mongoose.model('Post', PostSchema);

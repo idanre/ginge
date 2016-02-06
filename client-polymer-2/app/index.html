@@ -15,15 +15,6 @@
         paper-toolbar {
           --paper-toolbar-background: #00BCD4;
         }
-        paper-toolbar .title {
-          margin: 0 8px;
-        }
-        paper-scroll-header-panel .content {
-          padding: 8px;
-        }
-        paper-icon-button {
-          --paper-icon-button-ink-color: white;
-        }
         .spacer {
           @apply(--layout-flex);
         }
@@ -37,6 +28,13 @@
     </style>
   </head>
 <body unresolved>
+  <iron-ajax
+    auto
+    url="http://localhost:8088/posts"
+    params='{}'
+    handle-as="json"
+    last-response="response"
+    debounce-duration="300"></iron-ajax>
   <paper-scroll-header-panel fixed>
     <paper-toolbar>
       <div class="title">Ginge</div>

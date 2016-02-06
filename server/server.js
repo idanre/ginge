@@ -6,6 +6,8 @@ var morgan = require("morgan");
 var config = require('./config/config');
 var port = 8088;
 
+process.env.TZ = 'Asia/Jerusalem';
+
 // bodyParser helps to access request body parameters
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

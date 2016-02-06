@@ -1,20 +1,28 @@
 var express = require('express');
 var router = express.Router();
-var Post = require("../models/post");
+var Day = require("../models/day");
+var moment = require("moment");
 
 router.route("/")
   // get posts between start to end date
   .get(function(req, res) {
     var start, end;
     if (req.query.start && req.query.end) {
-      start = new Date(req.query.start);
-      end = new Date(req.query.end);
-      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-        res.sendStatus(501);
+      start = moment(req.query.start, "D-M-YYYY");
+      end = moment(req.query.end, "D-M-YYYY");
+      if (start.format() == "Invalid date" || end.format() == "Invalid date") {
+        // invalid param
+          res.sendStatus(500);
       }
-      res.json({ start: start, end: end });
+        end.endOf("day");
+        Day.getDays(start, end).then(function(err, days){
+            if(err) res.send(err);
+            res.send(days);
+        });
+
     } else {
-      res.sendStatus(500);
+      // missing param
+        res.sendStatus(500);
     }
   });
 module.exports = router;

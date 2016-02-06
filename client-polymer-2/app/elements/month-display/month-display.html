@@ -27,9 +27,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     </style>
     <div><span>{{displayMonth}}</span>/<span>{{year}}</span></div>
-    <template id="dayslist" is="dom-repeat" items="{{days}}" as="week">
+    <template is="dom-repeat" items="{{days}}" as="week">
       <div class="week">
-      <template id="dayslist" is="dom-repeat" items="{{week}}" as="day">
+      <template is="dom-repeat" items="{{week}}" as="day">
         <div class="day"><day-card day="{{day}}"></day-card></div>
       </template>
       </div>
