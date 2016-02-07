@@ -1,6 +1,6 @@
 var faker = require('faker');
 var Post = require("../models/post");
-var startAt = "1-1-2016";
+var startAt = "1-2-2016";
 var mongoose = require("mongoose");
 var moment = require('moment');
 var config = require('../config/config');

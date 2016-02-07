@@ -12,17 +12,22 @@ router.route("/")
       end = moment(req.query.end, "D-M-YYYY");
       if (start.format() == "Invalid date" || end.format() == "Invalid date") {
         // invalid param
-          res.sendStatus(500);
+        res.sendStatus(500);
       }
-        end.endOf("day");
-        Day.getDays(start, end).then(function(err, days){
-            if(err) res.send(err);
-            res.send(days);
-        });
+      end.endOf("day");
+      Day.getDays(start, end).then(function(days){
+        var resObj;
+        resObj = days.reduce(function(prev, curr){
+          prev[curr._id] = curr;
+          return prev;
+        }, {});
+        console.log(resObj);
 
+        res.send(resObj);
+      });
     } else {
       // missing param
-        res.sendStatus(500);
+      res.sendStatus(500);
     }
   });
 module.exports = router;

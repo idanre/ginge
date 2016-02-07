@@ -43,13 +43,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
       }
+      .hidden {
+        visibility: hidden
+      }
     </style>
       <paper-card>
         <div class="card-content">
+        <div class$="{{_hidden}}">
           <div>{{day}}</div>
           <div class="fab-container">
             <paper-fab class$="{{fabClass}}"></paper-fab>
           </div>
+        </div>
         </div>
       </paper-card>
   </template>
@@ -61,6 +66,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'day-card',
 
       properties: {
+        avg: {
+          type: Number
+        },
         day: {
           type: String,
           value: "*",
@@ -68,11 +76,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
         fabClass: {
           type: String,
-          value: function(){
-            var classes = ["gray", "gray", "gray", "red", "orange", "yellow", "lightGreen", "green"];
-            return classes[Math.floor(Math.random()*classes.length)];
-          },
+          computed: "_setFabClass(avg)"
+        },
+        _hidden: {
+          type: Boolean,
+          computed: "_hide(day)"
         }
+      },
+      _setFabClass: function(avg){
+        var classes = ["gray", "red", "orange", "yellow", "lightGreen", "green"];
+        return classes[avg];
+      },
+      _hide: function(day) {
+        return day === "*" ? "hidden" : "visible"
       }
     });
   })();

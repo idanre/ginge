@@ -28,13 +28,7 @@
     </style>
   </head>
 <body unresolved>
-  <iron-ajax
-    auto
-    url="http://localhost:8088/posts"
-    params='{}'
-    handle-as="json"
-    last-response="response"
-    debounce-duration="300"></iron-ajax>
+
   <paper-scroll-header-panel fixed>
     <paper-toolbar>
       <div class="title">Ginge</div>
@@ -42,15 +36,11 @@
     <div class="content">
       <div class="main">
         <template is="dom-bind" id="month">
-          <month-display date="{{date}}"></month-display>
+          <month-display></month-display>
         </template>
       </div>
     </div>
 
   </paper-scroll-header-panel>
-  <script>
-  var monthComponent = document.querySelector('#month');
-  monthComponent.date = new Date("03/01/2015");
-  </script>
 </body>
 </html>

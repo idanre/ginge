@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/moment/min/moment.min.js"></script>
 
 <dom-module id="month-display">
   <template>
@@ -26,11 +27,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         margin: 4px;
       }
     </style>
-    <div><span>{{displayMonth}}</span>/<span>{{year}}</span></div>
+    <iron-ajax
+      auto
+      url="http://localhost:8088/days"
+      params="{{_setAjaxParams(date)}}"
+      handle-as="json"
+      on-response="_updateView"
+      debounce-duration="300">
+    </iron-ajax>
+    <div><span>{{displayMonth}}</span>/<span>{{displayYear}}</span></div>
     <template is="dom-repeat" items="{{days}}" as="week">
       <div class="week">
       <template is="dom-repeat" items="{{week}}" as="day">
-        <div class="day"><day-card day="{{day}}"></day-card></div>
+        <div class="day"><day-card day="{{day.day}}", avg="{{day.avg}}"></day-card></div>
       </template>
       </div>
     </template>
@@ -48,7 +57,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: function() {
             return new Date();
           },
-          observer: '_updateData',
           notify: true
         },
         month: {
@@ -61,43 +69,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         year: {
           type: Number
         },
+        displayYear: {
+          type: String,
+          computed: '_setDisplayYear(date)'
+        },
         days: {
           type: Array,
           value: function() {
             return [];
           },
           notify: true
+        },
+        _ajaxParams: {
+          type: Object,
+          computed: '_setAjaxParams(date)'
         }
       },
-      _updateData: function(date){
-        var tempDate, dayArr = [], week = [], weekDay, day;
-        this.month = date.getMonth();
-        this.year = date.getFullYear();
-        tempDate = new Date(this.year, this.month, 1);
-        weekDay = tempDate.getDay();
-        day = tempDate.getDate();
+      _updateView: function(resEvent){
+        var tempDate, dayArr = [], week = [], day, data = resEvent.detail.response, key;
+
+        this.month = this.date.getMonth();
+        this.year = this.date.getFullYear();
+        tempDate = moment({year: this.year, month: this.month, day: 1});
+        day = tempDate.day();
         // spaces before
-        while(weekDay > week.length){
-          week.push("*");
-          weekDay = tempDate.getDay();
+        while(day > week.length){
+          week.push({ day: "*", avg: 0});
         }
         // generate days
-        while (tempDate.getMonth() === this.month) {
-          day = tempDate.getDate();
-          weekDay = tempDate.getDay();
-          week.push(day);
+        while (tempDate.month() === this.month) {
+          key = tempDate.format("DD-MM-YYYY");
+          week.push({day: tempDate.date(), avg: data[key] ? parseInt(data[key]["average"]) : 0});
           // end of week
           if(week.length === 7) {
             dayArr.push(week);
             week = [];
           }
-          tempDate.setDate(++day);
+          tempDate.add(1, "day");
         }
         // days after
         if(week.length > 0) {
           while(week.length < 7) {
-            week.push("*");
-            weekDay = tempDate.getDay();
+            week.push({ day: "*", avg: 0});
           }
           dayArr.push(week);
         }
@@ -107,6 +120,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       _setDisplayMonth: function(date){
         var monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
         return monthList[date.getMonth()];
+      },
+      _setDisplayYear: function(date){
+        return date.getFullYear();
+      },
+      _setAjaxParams: function(date){
+        var start = moment({year: date.getFullYear(), month: date.getMonth(), day: 1}),
+            end = moment(start).endOf("month");
+
+        return {
+          "start": start.format("D-M-YYYY"),
+          "end": end.format("D-M-YYYY")
+        }
       }
     });
   })();
