@@ -23,6 +23,7 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.1",
     "platinum-elements": "PolymerElements/platinum-elements#^1.1.0",
     "byutv-jsonp": "^1.2.0",
-    "moment": "^2.11.2"
+    "moment": "^2.11.2",
+    "page": "page.js#^1.6.4"
   }
 }

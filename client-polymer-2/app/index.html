@@ -18,12 +18,12 @@
         .spacer {
           @apply(--layout-flex);
         }
-        .content {
-          @apply(--layout-horizontal);
-          @apply(--layout-center-justified);
-        }
-        .main {
-          max-width: 960px;
+        @media (orientation: landscape) {
+          .content {
+            @apply(--layout-horizontal);
+            @apply(--layout-center-justified);
+            height: 100%;
+          }
         }
     </style>
   </head>
@@ -34,11 +34,9 @@
       <div class="title">Ginge</div>
     </paper-toolbar>
     <div class="content">
-      <div class="main">
-        <template is="dom-bind" id="month">
-          <month-display></month-display>
-        </template>
-      </div>
+      <template is="dom-bind" id="month">
+        <month-display></month-display>
+      </template>
     </div>
 
   </paper-scroll-header-panel>

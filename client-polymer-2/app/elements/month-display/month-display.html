@@ -20,11 +20,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .week {
         @apply(--layout-horizontal);
         @apply(--layout-justified);
+        height: 100%;
       }
       .day {
         @apply(--layout-flex);
         @apply(--layout-self-stretch);
         margin: 4px;
+        height: 100%;
       }
     </style>
     <iron-ajax
@@ -39,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template is="dom-repeat" items="{{days}}" as="week">
       <div class="week">
       <template is="dom-repeat" items="{{week}}" as="day">
-        <div class="day"><day-card day="{{day.day}}", avg="{{day.avg}}"></day-card></div>
+        <div class="day"><day-card day="{{day.day}}" date="{{day.date}}" avg="{{day.avg}}"></day-card></div>
       </template>
       </div>
     </template>
@@ -99,7 +101,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // generate days
         while (tempDate.month() === this.month) {
           key = tempDate.format("DD-MM-YYYY");
-          week.push({day: tempDate.date(), avg: data[key] ? parseInt(data[key]["average"]) : 0});
+          week.push({day: tempDate.date(), date: key, avg: data[key] ? parseInt(data[key]["average"]) : 0});
           // end of week
           if(week.length === 7) {
             dayArr.push(week);

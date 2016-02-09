@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<script src="../../bower_components/moment/min/moment.min.js"></script>
 
 <dom-module id="day-card">
   <template>
@@ -19,6 +20,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :root {
         --paper-card: {
           width: 100%;
+          height: 100%;
         }
       }
       .gray {
@@ -52,7 +54,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class$="{{_hidden}}">
           <div>{{day}}</div>
           <div class="fab-container">
-            <paper-fab class$="{{fabClass}}"></paper-fab>
+            <paper-fab class$="{{_fabClass}}" disabled$="{{_fabDisabled}}"></paper-fab>
           </div>
         </div>
         </div>
@@ -74,19 +76,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: "*",
           notify: true
         },
-        fabClass: {
+        date: {
           type: String,
-          computed: "_setFabClass(avg)"
+          value: ""
+        },
+        _fabClass: {
+          type: String,
+          computed: "_setFabClass(avg, date)"
         },
         _hidden: {
           type: Boolean,
           computed: "_hide(day)"
+        },
+        _fabDisabled: {
+          type: Boolean,
+          computed: "_setFabDisabled(date)"
         }
       },
-      _setFabClass: function(avg){
+      _setFabClass: function(avg, date){
         var classes = ["gray", "red", "orange", "yellow", "lightGreen", "green"];
+        if (moment(date, "DD-MM-YYYY").isAfter(moment(Date.now()))){
+          return "hidden";
+        }
         return classes[avg];
       },
+      _setFabDisabled: function(date){
+        if (moment(date, "DD-MM-YYYY").isAfter(moment(Date.now()))){
+          return true;
+        }
+        return false;
+      },
+
       _hide: function(day) {
         return day === "*" ? "hidden" : "visible"
       }
